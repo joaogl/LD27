@@ -11,6 +11,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import joaogl.d4rk.ld27.util.Util;
+
 public class Gui {
 
 	public static Screen screen;
@@ -26,7 +28,7 @@ public class Gui {
 
 	public static void load() {
 		try {
-			myCursor = ImageIO.read(new File("\\res\\textures\\cursors\\Cursor1.png"));
+			myCursor1 = ImageIO.read(new File(Util.replaceWithSystemFileSeparator("\\res\\textures\\cursors\\Cursor1.png", "\\")));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
