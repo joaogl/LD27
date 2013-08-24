@@ -1,7 +1,25 @@
 package joaogl.d4rk.ld27.scr;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_COLOR_MATERIAL;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION_MATRIX;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glViewport;
+
+import java.awt.Font;
+
 import joaogl.d4rk.ld27.data.GameValues;
 import joaogl.d4rk.ld27.graphics.Render;
+import joaogl.d4rk.ld27.graphics.RenderText;
+import joaogl.d4rk.ld27.graphics.Textures;
 import joaogl.d4rk.ld27.scr.entity.Bot;
 import joaogl.d4rk.ld27.scr.entity.Player;
 
@@ -9,8 +27,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.GL11.*;
+import org.newdawn.slick.TrueTypeFont;
 
 public class Game implements Runnable {
 
@@ -23,6 +40,7 @@ public class Game implements Runnable {
 	Player player = new Player();
 	Bot bot = new Bot();
 	Level level = new Level();
+	TrueTypeFont font;
 
 	public Game() {
 		render = new Render();
@@ -46,7 +64,9 @@ public class Game implements Runnable {
 		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		glLoadIdentity();
 		glOrtho(0, GameValues.width, GameValues.height, 0, 0, 1.0f);
-
+		Level.setLevel(1, Textures.level1, Textures.getPath("level1", "png"));
+		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+		font = new TrueTypeFont(awtFont, false);
 	}
 
 	public void start() {
@@ -80,7 +100,9 @@ public class Game implements Runnable {
 				ups = updates;
 				updates = 0;
 				frames = 0;
-				System.out.println("FPS: " + fps + " UPS: " + ups);
+				System.out.println("FPS: " + fps + " UPS: " + ups);/*
+																	 * System.out.println("Player coords: " + player.getPlayerX() + " | " + player.getPlayerY()); System.out.println("Top Left: " + player.getL() + ", " + player.getT()); System.out.println("Top Right: " + player.getR() + ", " + player.getT()); System.out.println("Bot Left: " + player.getL() + ", " + player.getB()); System.out.println("Bot Right: " + player.getR() + ", " + player.getB());
+																	 */
 			}
 			check();
 		}
@@ -101,9 +123,13 @@ public class Game implements Runnable {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		render.setColor(0x77E1FF);
 		render.background();
+
 		level.render();
 		player.render();
 		bot.render();
+		render.setColor(0x77E1FF);
+		// font.drawString(100, 100, "FPS: " + fps + " UPS: " + ups);
+
 		Display.update();
 	}
 

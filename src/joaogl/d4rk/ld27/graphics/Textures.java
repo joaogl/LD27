@@ -18,6 +18,10 @@ public class Textures {
 		return null;
 	}
 
+	public static String getPath(String key, String extension) {
+		return ("/tex/" + key + "." + extension);
+	}
+
 	public static Texture bot = loadTexture("bot", "png");
 	public static Texture player = loadTexture("player", "png");
 	public static Texture level1 = loadTexture("level1", "png");

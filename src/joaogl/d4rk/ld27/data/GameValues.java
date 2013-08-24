@@ -7,6 +7,7 @@ public class GameValues {
 	public static int height = width / 16 * 9;
 
 	public static int PLAYER_SIZE = 30;
-	public static int PLAYER_SPEED = 2;
-	public static int BOT_SPEED = 4;
+	public static int PLAYER_SPEED = 1;
+	public static int BOT_SPEED = 2;
+
 }
