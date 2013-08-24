@@ -1,10 +1,14 @@
 package joaogl.d4rk.ld27.scr;
 
+import java.awt.Color;
+
 import joaogl.d4rk.ld27.data.GameValues;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class Game implements Runnable {
@@ -33,6 +37,9 @@ public class Game implements Runnable {
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
+		glMatrixMode(GL_PROJECTION_MATRIX);
+		glOrtho(0, width, height, 0, 0, 1.0f);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	public void start() {
@@ -66,6 +73,7 @@ public class Game implements Runnable {
 				ups = updates;
 				updates = 0;
 				frames = 0;
+				System.out.println("FPS: " + fps + " UPS: " + ups);
 			}
 			check();
 		}
@@ -76,14 +84,29 @@ public class Game implements Runnable {
 		if (Display.isCloseRequested()) running = false;
 	}
 
+	int px = 200, py = 150;
+	int speed = 5;
+	int bspeed = 10;
+	boolean dir = false;
+	int bx = 0, by = 200;
+
 	private void update() {
-		System.out.println("FPS: " + fps + " UPS: " + ups);
+		if (px <= width && px >= 0 && py <= height && py >= 0) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) py -= speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) py += speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) px -= speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) px += speed;
+		}
+		if (dir) bx += bspeed;
+		else bx -= bspeed;
+		if (bx < 0) dir = true;
+		if (bx >= width) dir = false;
 	}
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// render.quad();
-		render.triQuad();
+		render.tile(bx, by, 40);
+		render.tile(px, py, 40);
 		Display.update();
 	}
 

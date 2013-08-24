@@ -8,24 +8,19 @@ public class Render {
 
 	}
 
-	public void quad() {
-		glBegin(GL_QUADS);
-		glVertex2f(10.0f, 40.0f);
-		glVertex2f(10.0f, 10.0f);
-		glVertex2f(40.0f, 10.0f);
-		glVertex2f(40.0f, 40.0f);
-		glEnd();
+	public void tile(float x, float y, float size) {
+		triQuad(x, y, size, size);
 	}
 
-	public void triQuad() {
+	public void triQuad(float x, float y, float w, float h) {
 		glBegin(GL_TRIANGLES);
-		glVertex2f(10.0f, 40.0f);
-		glVertex2f(10.0f, 10.0f);
-		glVertex2f(40.0f, 40.0f);
+		glVertex2f(x, y + h);
+		glVertex2f(x, y);
+		glVertex2f(x + w, y);
 
-		glVertex2f(10.0f, 40.0f);
-		glVertex2f(40.0f, 10.0f);
-		glVertex2f(40.0f, 40.0f);
+		glVertex2f(x, y + h);
+		glVertex2f(x + w, y);
+		glVertex2f(x + w, y + h);
 		glEnd();
 	}
 
