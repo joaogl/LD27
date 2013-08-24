@@ -24,4 +24,11 @@ public class Render {
 		glEnd();
 	}
 
+	public void setColor(int i) {
+		int r = (i & 0xff0000) >> 16;
+		int g = (i & 0xff00) >> 8;
+		int b = (i & 0xff) >> 16;
+		glColor3f(r, g, b);
+	}
+
 }

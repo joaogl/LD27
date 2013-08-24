@@ -105,7 +105,9 @@ public class Game implements Runnable {
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		render.setColor(0xff00ff);
 		render.tile(bx, by, 40);
+		render.setColor(0xff0000);
 		render.tile(px, py, 40);
 		Display.update();
 	}
