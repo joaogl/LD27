@@ -10,6 +10,9 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import joaogl.d4rk.ld27.data.GameValues;
+import joaogl.d4rk.ld27.engine.Keyboard;
+
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = -6366832747806672606L;
 

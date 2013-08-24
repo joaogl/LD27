@@ -1,4 +1,4 @@
-package joaogl.d4rk.ld27;
+package joaogl.d4rk.ld27.engine;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;

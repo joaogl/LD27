@@ -4,6 +4,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import joaogl.d4rk.ld27.data.GameValues;
+
 public class MainMethod {
 
 	public static void main(String[] args) {
