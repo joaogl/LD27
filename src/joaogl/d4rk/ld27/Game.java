@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
@@ -17,12 +19,18 @@ public class Game extends Canvas implements Runnable {
 	int ups = 0;
 	public JFrame frame;
 	Keyboard key;
+	Screen screen;
+	private BufferedImage image;
+	private int[] pixels;
 
 	public Game() {
 		Dimension size = new Dimension(GameValues.width, GameValues.height);
 		setPreferredSize(size);
 		frame = new JFrame();
 		key = new Keyboard();
+		screen = new Screen(GameValues.width, GameValues.height);
+		image = new BufferedImage(GameValues.width, GameValues.height, BufferedImage.TYPE_INT_ARGB);
+		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 		addKeyListener(key);
 		addFocusListener(key);
 	}
@@ -84,8 +92,11 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		Graphics g = bs.getDrawGraphics();
+		screen.clearScreen(pixels);
+		screen.render(pixels);
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
+
 		g.dispose();
 		bs.show();
 	}
