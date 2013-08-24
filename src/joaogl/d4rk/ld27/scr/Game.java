@@ -11,9 +11,15 @@ public class Game implements Runnable {
 	public int width, height;
 	public boolean running = false;
 	Thread thread;
+	Render render;
 
 	public Game() {
-		init();
+		render = new Render();
+	}
+
+	public void setSize(int width, int height) {
+		this.width = width;
+		this.height = height;
 	}
 
 	private void init() {
@@ -33,6 +39,7 @@ public class Game implements Runnable {
 	}
 
 	public void run() {
+		init();
 		long lastTime = System.nanoTime();
 		double ns = 10000000000.0 / 60.0;
 		double delta = 0;
@@ -50,8 +57,14 @@ public class Game implements Runnable {
 			}
 			render();
 			frames++;
+			if (System.currentTimeMillis() - lastTimer > 1000) {
+				lastTimer += 1000;
+				updates = 0;
+				frames = 0;
+			}
 			check();
 		}
+		Display.destroy();
 	}
 
 	private void check() {
@@ -64,5 +77,11 @@ public class Game implements Runnable {
 
 	private void render() {
 
+	}
+
+	public static void main(String[] args) {
+		Game game = new Game();
+		game.setSize(1280, 7200);
+		game.start();
 	}
 }
