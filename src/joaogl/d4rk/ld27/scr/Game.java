@@ -5,6 +5,7 @@ import joaogl.d4rk.ld27.data.GameValues;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Game implements Runnable {
 
@@ -12,6 +13,8 @@ public class Game implements Runnable {
 	public boolean running = false;
 	Thread thread;
 	Render render;
+	int fps;
+	int ups;
 
 	public Game() {
 		render = new Render();
@@ -41,7 +44,7 @@ public class Game implements Runnable {
 	public void run() {
 		init();
 		long lastTime = System.nanoTime();
-		double ns = 10000000000.0 / 60.0;
+		double ns = 1000000000.0 / 60.0;
 		double delta = 0;
 		long lastTimer = System.currentTimeMillis();
 		int frames = 0;
@@ -59,6 +62,8 @@ public class Game implements Runnable {
 			frames++;
 			if (System.currentTimeMillis() - lastTimer > 1000) {
 				lastTimer += 1000;
+				fps = frames;
+				ups = updates;
 				updates = 0;
 				frames = 0;
 			}
@@ -72,16 +77,19 @@ public class Game implements Runnable {
 	}
 
 	private void update() {
-		Display.update();
+		System.out.println("FPS: " + fps + " UPS: " + ups);
 	}
 
 	private void render() {
-
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// render.quad();
+		render.triQuad();
+		Display.update();
 	}
 
 	public static void main(String[] args) {
 		Game game = new Game();
-		game.setSize(1280, 7200);
+		game.setSize(1280, 720);
 		game.start();
 	}
 }
