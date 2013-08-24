@@ -1,52 +1,52 @@
 package joaogl.d4rk.ld27.scr;
 
 import joaogl.d4rk.ld27.data.GameValues;
+import joaogl.d4rk.ld27.graphics.Render;
+import joaogl.d4rk.ld27.scr.entity.Bot;
+import joaogl.d4rk.ld27.scr.entity.Player;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Game implements Runnable {
 
-	public int width, height;
 	public boolean running = false;
 	Thread thread;
 	Render render;
 	int fps;
 	int ups;
-	Texture wood, white;
 	boolean renderit = true;
+	Player player = new Player();
+	Bot bot = new Bot();
+	Level level = new Level();
 
 	public Game() {
 		render = new Render();
 	}
 
-	public void setSize(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
-
 	private void init() {
 		try {
-			Display.setDisplayMode(new DisplayMode(width, height));
+			Display.setDisplayMode(new DisplayMode(GameValues.width, GameValues.height));
 			Display.setTitle(GameValues.GAME_NAME);
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 		glMatrixMode(GL_PROJECTION_MATRIX);
-		glOrtho(0, width, height, 0, 0, 1.0f);
 
 		glEnable(GL_TEXTURE_2D);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL11.GL_BLEND);
+		glViewport(0, 0, GameValues.width, GameValues.height);
+		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		glLoadIdentity();
+		glOrtho(0, GameValues.width, GameValues.height, 0, 0, 1.0f);
 
-		wood = Render.loadTexture("wood", "jpg");
-		white = Render.loadTexture("white", "png");
 	}
 
 	public void start() {
@@ -91,41 +91,24 @@ public class Game implements Runnable {
 		if (Display.isCloseRequested()) running = false;
 	}
 
-	int px = 200, py = 150;
-	int speed = 5;
-	int bspeed = 10;
-	boolean dir = false;
-	int bx = 0, by = 200;
-
 	private void update() {
-		if (px <= width && px >= 0 && py <= height && py >= 0) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_W)) py -= speed;
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) || Keyboard.isKeyDown(Keyboard.KEY_S)) py += speed;
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_A)) px -= speed;
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_D)) px += speed;
-			if (Keyboard.isKeyDown(Keyboard.KEY_F1)) {
-				if (renderit) renderit = false;
-				else renderit = true;
-			}
-		}
-		if (dir) bx += bspeed;
-		else bx -= bspeed;
-		if (bx < 0) dir = true;
-		if (bx >= width) dir = false;
+		Player.update();
+		Bot.update();
+		Level.update();
 	}
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// render.setColor(0xff00ff);
-		if (renderit) render.tile(bx, by, 100, wood);
-		// render.setColor(0xff0000);
-		render.tile(px, py, 100, white);
+		render.setColor(0x77E1FF);
+		render.background();
+		level.render();
+		player.render();
+		bot.render();
 		Display.update();
 	}
 
 	public static void main(String[] args) {
 		Game game = new Game();
-		game.setSize(1280, 720);
 		game.start();
 	}
 }
