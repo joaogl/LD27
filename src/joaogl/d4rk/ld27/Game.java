@@ -1,6 +1,7 @@
 package joaogl.d4rk.ld27;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -15,11 +16,15 @@ public class Game extends Canvas implements Runnable {
 	int fps = 0;
 	int ups = 0;
 	public JFrame frame;
+	Keyboard key;
 
 	public Game() {
 		Dimension size = new Dimension(GameValues.width, GameValues.height);
 		setPreferredSize(size);
 		frame = new JFrame();
+		key = new Keyboard();
+		addKeyListener(key);
+		addFocusListener(key);
 	}
 
 	public synchronized void start() {
@@ -67,7 +72,8 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public void update() {
-		System.out.println(fps + " : " + ups);
+		key.tick();
+		if (key.f1) System.out.println(fps + " : " + ups);
 	}
 
 	public void render() {
@@ -78,6 +84,8 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		Graphics g = bs.getDrawGraphics();
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		g.dispose();
 		bs.show();
 	}

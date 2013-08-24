@@ -12,10 +12,10 @@ public class MainMethod {
 		game.frame.setTitle(GameValues.GAME_NAME);
 		game.frame.add(game);
 		game.frame.pack();
-		game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.frame.setLocationRelativeTo(null);
 		game.frame.setVisible(true);
-		game.frame.setMinimumSize(new Dimension(600, 600));
+		game.frame.setMinimumSize(new Dimension(600, 300));
 		game.frame.setMaximumSize(new Dimension(1200, 1200 / 16 * 9));
 		game.frame.setTitle(GameValues.GAME_NAME);
 		game.start();
