@@ -1,13 +1,13 @@
 package joaogl.d4rk.ld27.scr;
 
-import java.awt.Color;
-
 import joaogl.d4rk.ld27.data.GameValues;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -19,6 +19,8 @@ public class Game implements Runnable {
 	Render render;
 	int fps;
 	int ups;
+	Texture wood, white;
+	boolean renderit = true;
 
 	public Game() {
 		render = new Render();
@@ -39,7 +41,12 @@ public class Game implements Runnable {
 		}
 		glMatrixMode(GL_PROJECTION_MATRIX);
 		glOrtho(0, width, height, 0, 0, 1.0f);
+
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_COLOR_MATERIAL);
+
+		wood = Render.loadTexture("wood", "jpg");
+		white = Render.loadTexture("white", "png");
 	}
 
 	public void start() {
@@ -92,10 +99,14 @@ public class Game implements Runnable {
 
 	private void update() {
 		if (px <= width && px >= 0 && py <= height && py >= 0) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) py -= speed;
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) py += speed;
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) px -= speed;
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) px += speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_W)) py -= speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) || Keyboard.isKeyDown(Keyboard.KEY_S)) py += speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_A)) px -= speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_D)) px += speed;
+			if (Keyboard.isKeyDown(Keyboard.KEY_F1)) {
+				if (renderit) renderit = false;
+				else renderit = true;
+			}
 		}
 		if (dir) bx += bspeed;
 		else bx -= bspeed;
@@ -105,10 +116,10 @@ public class Game implements Runnable {
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		render.setColor(0xff00ff);
-		render.tile(bx, by, 40);
-		render.setColor(0xff0000);
-		render.tile(px, py, 40);
+		// render.setColor(0xff00ff);
+		if (renderit) render.tile(bx, by, 100, wood);
+		// render.setColor(0xff0000);
+		render.tile(px, py, 100, white);
 		Display.update();
 	}
 

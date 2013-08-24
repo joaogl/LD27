@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="src" path="lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jinput.jar"/>
@@ -14,5 +15,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="LD27/lib/natives"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="G:/Programacao/Java Games/slick.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
